@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 	}
 
 	uint8_t localip[]={ 192,168, 70, 45};
-	RTPIPv4Address addr(localip,9000);
+	RTPIPv4Address addr(localip,9400);
 
 	status = session.AddDestination(addr);
 	if (status < 0)

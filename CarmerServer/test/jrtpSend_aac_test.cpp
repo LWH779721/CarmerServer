@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	RTPSessionParams sessionparams;
 	RTPUDPv4TransmissionParams transparams;
 	
-	sessionparams.SetOwnTimestampUnit(1.0/44100.0);
+	sessionparams.SetOwnTimestampUnit(1.0/43.0);
 	transparams.SetPortbase(8000);
 
 	int status = session.Create(sessionparams,&transparams);
@@ -43,11 +43,11 @@ int main(int argc, char** argv)
 		exit(-1);
 	}
 
-	session.SetDefaultPayloadType(96);
+	session.SetDefaultPayloadType(97);
 	session.SetDefaultMark(false);
-	session.SetDefaultTimestampIncrement(400);
+	session.SetDefaultTimestampIncrement(23);
 
-	RTPTime delay(0.040);
+	RTPTime delay(0.023);
 	RTPTime starttime = RTPTime::CurrentTime();
 
 	char sendbuf[1500];
@@ -86,7 +86,6 @@ int main(int argc, char** argv)
  
     // (2.1) Get current encoding configuration
     pConfiguration = faacEncGetCurrentConfiguration(hEncoder);
-    printf("3 -------------------------------\n"); 
 	
 	pConfiguration->aacObjectType = LOW;    //LC编码
 	pConfiguration->mpegVersion = MPEG4;  //
@@ -114,7 +113,6 @@ int main(int argc, char** argv)
         nRet = faacEncEncode(
             hEncoder, (int*) pbPCMBuffer, nInputSamples, pbAACBuffer, nMaxOutputBytes);
  
-        printf("%d: faacEncEncode returns %d\n", i, nRet);
 		if (nRet == 0)
 		{
 			continue;
@@ -124,7 +122,7 @@ int main(int argc, char** argv)
 		sendbuf[3] = ((nRet - 7) & 0x1f) << 3;
 		memcpy(sendbuf + 4, pbAACBuffer + 7, nRet - 7);
 		
-		status = session.SendPacket((void *)sendbuf, nRet - 3,96,true, 100);
+		status = session.SendPacket((void *)sendbuf, nRet - 3,97,true, 24);
 		if (status < 0)
 		{
 			std::cerr << RTPGetErrorString(status) << std::endl;
@@ -133,7 +131,8 @@ int main(int argc, char** argv)
 
         if(nBytesRead <= 0)
         {
-            break;
+            //break;
+			rewind(fpIn);
         }
 		
 		RTPTime::Wait(delay);

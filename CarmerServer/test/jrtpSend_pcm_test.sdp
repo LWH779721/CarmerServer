@@ -1,0 +1,5 @@
+m=audio 9000 RTP/AVP 97
+a=rtpmap:97 mpeg4-generic/44100/1
+a=ptime:24
+a=fmtp:96 streamtype=5; profile-level-id=15; mode=AAC-hbr; config=1208; SizeLength=13; IndexLength=3; IndexDeltaLength=3;Profile=1
+c=IN IP4 192.168.0.22 
