@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 2.8)
 PROJECT(CarmerServerTest)
 
 INCLUDE_DIRECTORIES(../include) 
-INCLUDE_DIRECTORIES(../../jrtplib-3.11.1/build/src)
-INCLUDE_DIRECTORIES(../../jrtplib-3.11.1/src) 
-INCLUDE_DIRECTORIES(../../faac-1.29.9.2/include) 
-link_directories("/home/lwh/workspace/jrtplib-3.11.1/build/src/")
-link_directories("/home/lwh/workspace/faac-1.29.9.2/libfaac/.libs")
+INCLUDE_DIRECTORIES(../depend/jrtplib-3.11.1/include/)
+INCLUDE_DIRECTORIES(../depend/faac-1.29.9.2/include) 
+
+link_directories(${PROJECT_SOURCE_DIR}/../depend/jrtplib-3.11.1/libs/)
+link_directories(${PROJECT_SOURCE_DIR}/../depend/faac-1.29.9.2/libs/)
 
 ADD_EXECUTABLE(H264Nalu_test H264Nalu_test.c)  
 TARGET_LINK_LIBRARIES(H264Nalu_test CarmerServer)
